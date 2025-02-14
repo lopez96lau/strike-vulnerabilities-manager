@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Vulnerability {
-  id          String   @id @default(uuid())
+  id          Int   @id @default(autoincrement())
   title       String
   description String
   severity    String   // Baja, Media, Alta, Crítica

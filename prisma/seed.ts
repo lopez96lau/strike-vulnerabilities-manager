@@ -6,7 +6,6 @@ async function main() {
   await prisma.vulnerability.createMany({
     data: [
       {
-        id: "1",
         updatedAt: new Date(),
         title: "SQL Injection in Login Form",
         description:
@@ -16,7 +15,6 @@ async function main() {
         status: "Pending Fix",
       },
       {
-        id: "2",
         updatedAt: new Date(),
         title: "Cross-Site Scripting (XSS) in Comments",
         description:
@@ -26,7 +24,6 @@ async function main() {
         status: "In Progress",
       },
       {
-        id: "3",
         updatedAt: new Date(),
         title: "Insecure Direct Object Reference (IDOR)",
         description:
@@ -36,7 +33,6 @@ async function main() {
         status: "Pending Fix",
       },
       {
-        id: "4",
         updatedAt: new Date(),
         title: "Weak Password Policy",
         description:

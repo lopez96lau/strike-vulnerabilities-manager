@@ -17,7 +17,6 @@ export async function POST(req: Request) {
       severity,
       cwe,
       status,
-      id: "0",
       updatedAt: new Date(),
     },
   });
