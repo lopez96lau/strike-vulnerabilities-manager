@@ -6,20 +6,12 @@ import {
   Input,
   Select,
   Textarea,
-  Card,
   Text,
   Spacer,
-  Grid,
 } from "@geist-ui/core";
-
-interface Vulnerability {
-  id: number;
-  title: string;
-  description: string;
-  severity: string;
-  cwe: string;
-  status: string;
-}
+import { VULNERABILITY_STATUSES } from "./constants";
+import { VulnerabilityCard } from "@/components/VulnerabilityCard/VulnerabilityCard";
+import { Vulnerability } from "./types";
 
 export default function Vulnerabilities() {
   const [data, setData] = useState([]);
@@ -86,6 +78,15 @@ export default function Vulnerabilities() {
     }));
   };
 
+  const colorVariants = {
+    gray: "bg-gray-50",
+    pink: "bg-pink-50",
+    amber: "bg-amber-50",
+    blue: "bg-blue-50",
+    red: "bg-red-50",
+    green: "bg-green-50",
+  };
+
   return (
     <div className="p-4">
       <div
@@ -98,45 +99,50 @@ export default function Vulnerabilities() {
       >
         <Text h2>Vulnerabilidades</Text>
         <Button
-          auto={true}
-          shadow={true}
+          auto
+          shadow
           type="secondary"
           onClick={() => setIsModalOpen(true)}
-          placeholder=""
         >
           Nueva Vulnerabilidad
         </Button>
       </div>
 
-      <Grid.Container gap={2}>
-        {data.map((vuln: Vulnerability) => (
-          <Grid xs={24} sm={12} md={8} key={vuln.id}>
-            <Card shadow width="100%">
-              <Text h4 style={{ margin: 0 }}>
-                {vuln.title}
+      <div className="overflow-hidden">
+        <div className="flex flex-row gap-4 p-4 overflow-x-auto h-full">
+          {VULNERABILITY_STATUSES.map((status) => (
+            <div
+              key={status.id}
+              className={`flex-shrink-0 shadow w-[440px] rounded-[10px] p-4 border border-gray-400 ${
+                colorVariants[status.color]
+              }`}
+            >
+              <Text h4 style={{ marginBottom: "1rem" }}>
+                {status.name}
               </Text>
-              <Text type="secondary">{vuln.status}</Text>
-              <Text small>{vuln.description}</Text>
-              <Spacer h={0.5} />
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Text small type="success">
-                  CWE: {vuln.cwe}
-                </Text>
-                <Text
-                  small
-                  type={
-                    vuln.severity.toLowerCase() === "critical"
-                      ? "error"
-                      : "secondary"
-                  }
-                >
-                  {vuln.severity}
-                </Text>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
+                {data
+                  .filter((vuln: Vulnerability) => vuln.status === status.name)
+                  .map((vuln: Vulnerability) => (
+                    <VulnerabilityCard
+                      {...vuln}
+                      color={status.color}
+                      key={vuln.id}
+                    />
+                  ))}
               </div>
-            </Card>
-          </Grid>
-        ))}
-      </Grid.Container>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal remains the same */}
       <Modal visible={isModalOpen} onClose={closeHandler}>
         <Modal.Title>Nueva Vulnerabilidad</Modal.Title>
         <Modal.Content>
