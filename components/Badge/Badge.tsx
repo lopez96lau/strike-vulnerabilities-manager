@@ -1,12 +1,13 @@
 import React, { ReactNode } from "react";
 
 interface BadgeProps {
-  label?: string;
   color: string;
   children: ReactNode;
+  label?: string;
+  title?: string;
 }
 
-export const VulnerabilityBadge = (badge: BadgeProps) => {
+export const Badge = (badge: BadgeProps) => {
   const colorVariants = {
     gray: "bg-gray-200 text-gray-900",
     pink: "bg-pink-200 text-pink-900",
@@ -20,6 +21,7 @@ export const VulnerabilityBadge = (badge: BadgeProps) => {
       className={`${colorVariants[badge.color]} flex flex-row items-center ${
         badge.label ? "px-3" : "px-2"
       } rounded-full gap-1 py-2 font-semibold text-sm`}
+      title={badge.title}
     >
       {badge.children}
       {badge.label}

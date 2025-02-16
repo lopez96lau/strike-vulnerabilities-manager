@@ -1,28 +1,22 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Input,
-  Select,
-  Textarea,
-  Text,
-  Spacer,
-} from "@geist-ui/core";
+import { Button, Text } from "@geist-ui/core";
+import { Vulnerability } from "./types";
 import { VULNERABILITY_STATUSES } from "./constants";
 import { VulnerabilityCard } from "@/components/VulnerabilityCard/VulnerabilityCard";
-import { Vulnerability } from "./types";
+import { AddVulnerabilityModal } from "@/components/AddVulnerabilityModal/AddVulnerabilityModal";
 
 export default function Vulnerabilities() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalUpdating, setIsModalUpdating] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     severity: "Low",
     cwe: "",
-    status: "Pending Fix",
+    status: "Reported",
   });
 
   useEffect(() => {
@@ -39,6 +33,7 @@ export default function Vulnerabilities() {
   };
 
   const handleSubmit = async () => {
+    setIsModalUpdating(true);
     const response = await fetch("/api/vulnerabilities", {
       method: "POST",
       headers: {
@@ -46,15 +41,15 @@ export default function Vulnerabilities() {
       },
       body: JSON.stringify(formData),
     });
-
     if (response.ok) {
       setIsModalOpen(false);
+      setIsModalUpdating(false);
       setFormData({
         title: "",
         description: "",
         severity: "Low",
         cwe: "",
-        status: "Pending Fix",
+        status: "Reported",
       });
       fetchVulnerabilities();
     }
@@ -142,72 +137,15 @@ export default function Vulnerabilities() {
         </div>
       </div>
 
-      {/* Modal remains the same */}
-      <Modal visible={isModalOpen} onClose={closeHandler}>
-        <Modal.Title>Nueva Vulnerabilidad</Modal.Title>
-        <Modal.Content>
-          <form id="vulnerability-form">
-            <Input
-              width="100%"
-              placeholder="Title"
-              name="title"
-              value={formData.title}
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <Spacer h={0.5} />
-            <Textarea
-              width="100%"
-              title="Description"
-              placeholder="Description"
-              name="description"
-              value={formData.description}
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <Spacer h={0.5} />
-            <Select
-              width="100%"
-              placeholder="Severity"
-              value={formData.severity}
-              onChange={(val) =>
-                setFormData({ ...formData, severity: val as string })
-              }
-            >
-              <Select.Option value="Low">Low</Select.Option>
-              <Select.Option value="Medium">Medium</Select.Option>
-              <Select.Option value="High">High</Select.Option>
-              <Select.Option value="Critical">Critical</Select.Option>
-            </Select>
-            <Spacer h={0.5} />
-            <Input
-              width="100%"
-              placeholder="CWE"
-              name="cwe"
-              value={formData.cwe}
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <Spacer h={0.5} />
-            <Select
-              width="100%"
-              placeholder="Status"
-              value={formData.status}
-              onChange={(val) =>
-                setFormData({ ...formData, status: val as string })
-              }
-            >
-              <Select.Option value="Pending Fix">Pending Fix</Select.Option>
-              <Select.Option value="In Progress">In Progress</Select.Option>
-              <Select.Option value="Solved">Solved</Select.Option>
-            </Select>
-          </form>
-        </Modal.Content>
-        <Modal.Action passive onClick={closeHandler}>
-          Cancel
-        </Modal.Action>
-        <Modal.Action onClick={handleSubmit}>Save</Modal.Action>
-      </Modal>
+      <AddVulnerabilityModal
+        isOpen={isModalOpen}
+        isUpdating={isModalUpdating}
+        handleClose={closeHandler}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        setFormData={setFormData}
+      />
     </div>
   );
 }

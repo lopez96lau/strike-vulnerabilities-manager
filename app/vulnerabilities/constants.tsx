@@ -30,3 +30,26 @@ export const VULNERABILITY_STATUSES = [
     color: "green",
   },
 ];
+
+export const VULNERABILITY_SEVERITIES = [
+  {
+    id: "low",
+    name: "Low",
+    color: "blue",
+  },
+  {
+    id: "medium",
+    name: "Medium",
+    color: "gray",
+  },
+  {
+    id: "high",
+    name: "High",
+    color: "amber",
+  },
+  {
+    id: "critical",
+    name: "Critical",
+    color: "red",
+  },
+];
