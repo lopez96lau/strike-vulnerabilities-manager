@@ -53,3 +53,11 @@ export const VULNERABILITY_SEVERITIES = [
     color: "red",
   },
 ];
+
+export const EMPTY_VULNERABILITY = {
+  title: "",
+  description: "",
+  severity: "",
+  cwe: "",
+  status: "Reported",
+};

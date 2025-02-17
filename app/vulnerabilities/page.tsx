@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button, Text } from "@geist-ui/core";
 import { Vulnerability } from "./types";
-import { VULNERABILITY_STATUSES } from "./constants";
+import { EMPTY_VULNERABILITY, VULNERABILITY_STATUSES } from "./constants";
 import { VulnerabilityCard } from "@/components/VulnerabilityCard/VulnerabilityCard";
 import { AddVulnerabilityModal } from "@/components/AddVulnerabilityModal/AddVulnerabilityModal";
 
@@ -11,13 +11,7 @@ export default function Vulnerabilities() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalUpdating, setIsModalUpdating] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    severity: "Low",
-    cwe: "",
-    status: "Reported",
-  });
+  const [formData, setFormData] = useState(EMPTY_VULNERABILITY);
 
   useEffect(() => {
     fetchVulnerabilities();
@@ -44,34 +38,16 @@ export default function Vulnerabilities() {
     if (response.ok) {
       setIsModalOpen(false);
       setIsModalUpdating(false);
-      setFormData({
-        title: "",
-        description: "",
-        severity: "Low",
-        cwe: "",
-        status: "Reported",
-      });
+      setFormData(EMPTY_VULNERABILITY);
       fetchVulnerabilities();
     }
   };
 
-  const closeHandler = () => {
+  const handleClose = () => {
     setIsModalOpen(false);
   };
 
   if (loading) return <Text>Cargando...</Text>;
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const colorVariants = {
     gray: "bg-gray-50",
@@ -140,10 +116,9 @@ export default function Vulnerabilities() {
       <AddVulnerabilityModal
         isOpen={isModalOpen}
         isUpdating={isModalUpdating}
-        handleClose={closeHandler}
-        formData={formData}
-        handleChange={handleChange}
+        handleClose={handleClose}
         handleSubmit={handleSubmit}
+        formData={formData}
         setFormData={setFormData}
       />
     </div>

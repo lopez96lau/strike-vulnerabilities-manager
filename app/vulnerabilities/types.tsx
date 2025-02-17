@@ -7,3 +7,12 @@ export interface Vulnerability {
   status: string;
   createdAt: string;
 }
+
+export interface CWEData {
+  id: string;
+  name: string;
+  description: string;
+  likelihood: string;
+  consequences: string[];
+  mitigations: string[];
+}
