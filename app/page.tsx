@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button, Page, Text } from "@geist-ui/core";
+import { Button, Page, Text, useToasts } from "@geist-ui/core";
 import Image from "next/image";
 import VulnerabilityCard from "@/components/VulnerabilityCard";
 import AddVulnerabilityModal from "@/components/AddVulnerabilityModal";
@@ -25,6 +25,7 @@ export default function Vulnerabilities() {
   const [selectedVulnerability, setSelectedVulnerability] =
     useState<Vulnerability | null>(null);
 
+  const { setToast } = useToasts();
   useEffect(() => {
     fetchVulnerabilities();
   }, []);
@@ -55,21 +56,41 @@ export default function Vulnerabilities() {
     }
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (updatedData?: Vulnerability) => {
     setIsModalUpdating(true);
-    const response = await fetch(`/api/vulnerabilities/${formData.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    if (response.ok) {
+    try {
+      const response = await fetch(`/api/vulnerabilities/${formData.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData || formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to update vulnerability");
+      }
+
       setIsDetailsModalOpen(false);
       setIsModalUpdating(false);
       setFormData(EMPTY_VULNERABILITY);
       setSelectedVulnerability(null);
       fetchVulnerabilities();
+    } catch {
+      setToast({
+        text: (
+          <div className="hyphens-auto">
+            Ooops! Something happened while updating the vulnerability. Please
+            try again.
+          </div>
+        ),
+        type: "error",
+      });
+    } finally {
+      setIsModalUpdating(false);
+      setLoading(true);
     }
   };
 
