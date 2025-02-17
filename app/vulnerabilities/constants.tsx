@@ -1,3 +1,5 @@
+import { Vulnerability } from "./types";
+
 export const VULNERABILITY_STATUSES = [
   {
     id: "reported",
@@ -60,4 +62,4 @@ export const EMPTY_VULNERABILITY = {
   severity: "",
   cwe: "",
   status: "Reported",
-};
+} as Vulnerability;

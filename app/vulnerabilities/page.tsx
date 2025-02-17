@@ -74,6 +74,9 @@ export default function Vulnerabilities() {
           shadow
           type="secondary"
           onClick={() => setIsModalOpen(true)}
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
         >
           Nueva Vulnerabilidad
         </Button>
@@ -85,7 +88,7 @@ export default function Vulnerabilities() {
             <div
               key={status.id}
               className={`flex-shrink-0 shadow w-[440px] rounded-[10px] p-4 border border-gray-400 ${
-                colorVariants[status.color]
+                colorVariants[status.color as keyof typeof colorVariants]
               }`}
             >
               <Text h4 style={{ marginBottom: "1rem" }}>

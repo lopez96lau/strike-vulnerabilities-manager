@@ -18,7 +18,9 @@ export const Badge = (badge: BadgeProps) => {
   };
   return (
     <div
-      className={`${colorVariants[badge.color]} flex flex-row items-center ${
+      className={`${
+        colorVariants[badge.color as keyof typeof colorVariants]
+      } flex flex-row items-center ${
         badge.label ? "px-3" : "px-2"
       } rounded-full gap-1 py-2 font-semibold text-sm`}
       title={badge.title}

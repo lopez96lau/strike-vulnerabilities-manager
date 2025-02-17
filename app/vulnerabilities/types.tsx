@@ -13,6 +13,6 @@ export interface CWEData {
   name: string;
   description: string;
   likelihood: string;
-  consequences: string[];
+  consequences: string[] | unknown[];
   mitigations: string[];
 }

@@ -1,13 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 export const revalidate = 3600;
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: Promise<string> } }
-) {
-  const id = await params.id;
+export async function GET(request: NextRequest) {
+  const id = request.nextUrl.pathname.split("/").pop();
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing CWE ID" }, { status: 400 });
+  }
+
   const url = new URL(`https://cwe-api.mitre.org/api/v1/cwe/weakness/${id}`);
 
   try {
