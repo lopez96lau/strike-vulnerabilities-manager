@@ -3,7 +3,7 @@ import {
   HighSeverity,
   LowSeverity,
   MediumSeverity,
-} from "@/components/SeverityIcons/SeverityIcons";
+} from "@/components/SeverityIcons";
 
 export const getSeverityIcon = (severity: number) => {
   if (severity < 4) {
