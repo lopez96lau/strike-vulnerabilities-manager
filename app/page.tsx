@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button, Page, Text, useToasts } from "@geist-ui/core";
+import { Button, Page, Select, Text, useToasts } from "@geist-ui/core";
 import Image from "next/image";
 import VulnerabilityCard from "@/components/VulnerabilityCard";
 import AddVulnerabilityModal from "@/components/AddVulnerabilityModal";
@@ -35,6 +35,9 @@ export default function Vulnerabilities() {
   const [isModalUpdating, setIsModalUpdating] = useState(false);
   const [formData, setFormData] = useState(EMPTY_VULNERABILITY);
   const [activeVuln, setActiveVuln] = useState<Vulnerability | null>(null);
+  const [filters, setFilters] = useState<
+    Record<string, { severity?: string; sortBy?: string }>
+  >({});
   const [selectedVulnerability, setSelectedVulnerability] =
     useState<Vulnerability | null>(null);
 
@@ -50,6 +53,39 @@ export default function Vulnerabilities() {
         setData(data);
         setLoading(false);
       });
+  };
+
+  const filterAndSortVulnerabilities = (
+    vulnerabilities: Vulnerability[],
+    statusName: string
+  ) => {
+    let filtered = [...vulnerabilities];
+    const columnFilters = filters[statusName] || {};
+
+    // Aplicar filtro por severity
+    if (columnFilters.severity) {
+      filtered = filtered.filter((v) => v.severity === columnFilters.severity);
+    }
+
+    // Aplicar ordenamiento
+    if (columnFilters.sortBy) {
+      filtered.sort((a, b) => {
+        switch (columnFilters.sortBy) {
+          case "severity":
+            return b.severity.localeCompare(a.severity);
+          case "date":
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          case "title":
+            return a.title.localeCompare(b.title);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return filtered;
   };
 
   const handleSubmit = async () => {
@@ -149,6 +185,15 @@ export default function Vulnerabilities() {
     blue: "bg-blue-50",
     red: "bg-red-50",
     green: "bg-green-50",
+  };
+
+  const badgeColorVariants = {
+    gray: "bg-gray-700",
+    pink: "bg-pink-700",
+    amber: "bg-amber-700",
+    blue: "bg-blue-700",
+    red: "bg-red-700",
+    green: "bg-green-700",
   };
 
   const sensors = useSensors(
@@ -300,9 +345,103 @@ export default function Vulnerabilities() {
                     colorVariants[status.color as keyof typeof colorVariants]
                   }`}
                 >
-                  <Text h4 style={{ marginBottom: "1rem" }}>
-                    {status.name}
-                  </Text>
+                  <div className="flex justify-between items-center mb-4 gap-2">
+                    <div className="flex flex-col gap-2 w-full">
+                      <div className="flex w-full justify-between items-center">
+                        <Text h4 className="!m-0">
+                          {status.name}
+                        </Text>
+                        <div
+                          className={`${
+                            badgeColorVariants[
+                              status.color as keyof typeof badgeColorVariants
+                            ]
+                          } text-black rounded-full px-2`}
+                        >
+                          <Text h5 className="!m-0 text-white">
+                            {
+                              data.filter(
+                                (vuln: Vulnerability) =>
+                                  vuln.status === status.name
+                              ).length
+                            }
+                          </Text>
+                        </div>
+                      </div>
+                      <div className="flex w-full gap-3">
+                        <Select
+                          scale={2 / 3}
+                          placeholder="Filter"
+                          value={filters[status.name]?.severity}
+                          className="!w-full"
+                          onChange={(val) => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              [status.name]: {
+                                ...prev[status.name],
+                                severity: val as string,
+                              },
+                            }));
+                          }}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          <Select.Option value="High">High</Select.Option>
+                          <Select.Option value="Medium">Medium</Select.Option>
+                          <Select.Option value="Low">Low</Select.Option>
+                          <Select.Option value="Critical">
+                            Critical
+                          </Select.Option>
+                        </Select>
+                        <Select
+                          scale={2 / 3}
+                          placeholder="Sort by"
+                          value={filters[status.name]?.sortBy}
+                          className="!w-full"
+                          onChange={(val) => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              [status.name]: {
+                                ...prev[status.name],
+                                sortBy: val as string,
+                              },
+                            }));
+                          }}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          <Select.Option value="severity">
+                            Severity
+                          </Select.Option>
+                          <Select.Option value="date">Date</Select.Option>
+                          <Select.Option value="title">Title</Select.Option>
+                        </Select>
+                      </div>
+                      {(filters[status.name]?.severity ||
+                        filters[status.name]?.sortBy) && (
+                        <Button
+                          scale={2 / 3}
+                          auto
+                          px={0.6}
+                          onClick={() => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              [status.name]: {
+                                severity: "",
+                                sortBy: "",
+                              },
+                            }));
+                          }}
+                          type="secondary"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          Clear filters
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -312,18 +451,19 @@ export default function Vulnerabilities() {
                     }}
                   >
                     {!loading
-                      ? data
-                          .filter(
+                      ? filterAndSortVulnerabilities(
+                          data.filter(
                             (vuln: Vulnerability) => vuln.status === status.name
-                          )
-                          .map((vuln: Vulnerability) => (
-                            <DraggableVulnerabilityCard
-                              key={vuln.id}
-                              vulnerability={vuln}
-                              color={status.color}
-                              onClick={() => handleVulnerabilityClick(vuln)}
-                            />
-                          ))
+                          ),
+                          status.name
+                        ).map((vuln: Vulnerability) => (
+                          <DraggableVulnerabilityCard
+                            key={vuln.id}
+                            vulnerability={vuln}
+                            color={status.color}
+                            onClick={() => handleVulnerabilityClick(vuln)}
+                          />
+                        ))
                       : Array(4)
                           .fill(null)
                           .map((_, index) => (
