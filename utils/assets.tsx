@@ -58,3 +58,21 @@ export const getStatusHexColor = (status: string) => {
       return "#8f8f8f";
   }
 };
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Pending Fix":
+      return "pink";
+    case "In Progress":
+      return "amber";
+    case "Validation":
+      return "blue";
+    case "False Positive":
+      return "red";
+    case "Solved":
+      return "green";
+    case "Reported":
+    default:
+      return "gray";
+  }
+};

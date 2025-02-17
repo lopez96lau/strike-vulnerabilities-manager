@@ -6,6 +6,8 @@ export interface Vulnerability {
   cwe: string;
   status: string;
   createdAt: string;
+  assignedTo: string;
+  evidence: string;
 }
 
 export interface CWEData {

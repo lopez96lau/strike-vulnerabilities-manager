@@ -13,13 +13,17 @@ import logo from "@/public/assets/icons/logo.svg";
 import { Github, Plus } from "@geist-ui/icons";
 import Link from "next/link";
 import VulnerabilityCardSkeleton from "@/components/VulnerabilityCardSkeleton";
+import VulnerabilityDetailsModal from "@/components/VulnerabilityDetailsModal";
 
 export default function Vulnerabilities() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isModalUpdating, setIsModalUpdating] = useState(false);
   const [formData, setFormData] = useState(EMPTY_VULNERABILITY);
+  const [selectedVulnerability, setSelectedVulnerability] =
+    useState<Vulnerability | null>(null);
 
   useEffect(() => {
     fetchVulnerabilities();
@@ -44,15 +48,63 @@ export default function Vulnerabilities() {
       body: JSON.stringify(formData),
     });
     if (response.ok) {
-      setIsModalOpen(false);
+      setIsAddModalOpen(false);
       setIsModalUpdating(false);
       setFormData(EMPTY_VULNERABILITY);
       fetchVulnerabilities();
     }
   };
 
-  const handleClose = () => {
-    setIsModalOpen(false);
+  const handleEdit = async () => {
+    setIsModalUpdating(true);
+    const response = await fetch(`/api/vulnerabilities/${formData.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (response.ok) {
+      setIsDetailsModalOpen(false);
+      setIsModalUpdating(false);
+      setFormData(EMPTY_VULNERABILITY);
+      setSelectedVulnerability(null);
+      fetchVulnerabilities();
+    }
+  };
+
+  const handleVulnerabilityClick = (vulnerability: Vulnerability) => {
+    setSelectedVulnerability(vulnerability);
+    setFormData(vulnerability);
+    setIsDetailsModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    setIsModalUpdating(true);
+    const response = await fetch(
+      `/api/vulnerabilities/${selectedVulnerability?.id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.ok) {
+      setIsDetailsModalOpen(false);
+      setIsModalUpdating(false);
+      setFormData(EMPTY_VULNERABILITY);
+      setSelectedVulnerability(null);
+      fetchVulnerabilities();
+    }
+  };
+
+  const handleAddModalClose = () => {
+    setIsAddModalOpen(false);
+    setFormData(EMPTY_VULNERABILITY);
+  };
+
+  const handleDetailsModalClose = () => {
+    setIsDetailsModalOpen(false);
+    setSelectedVulnerability(null);
+    setFormData(EMPTY_VULNERABILITY);
   };
 
   const colorVariants = {
@@ -85,7 +137,7 @@ export default function Vulnerabilities() {
             <Button
               auto
               type="secondary"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsAddModalOpen(true)}
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -126,6 +178,7 @@ export default function Vulnerabilities() {
                             {...vuln}
                             color={status.color}
                             key={vuln.id}
+                            onClick={() => handleVulnerabilityClick(vuln)}
                           />
                         ))
                     : Array(4)
@@ -140,12 +193,23 @@ export default function Vulnerabilities() {
         </div>
 
         <AddVulnerabilityModal
-          isOpen={isModalOpen}
+          isOpen={isAddModalOpen}
           isUpdating={isModalUpdating}
-          handleClose={handleClose}
+          handleClose={handleAddModalClose}
           handleSubmit={handleSubmit}
           formData={formData}
           setFormData={setFormData}
+        />
+
+        <VulnerabilityDetailsModal
+          isOpen={isDetailsModalOpen}
+          isUpdating={isModalUpdating}
+          handleClose={handleDetailsModalClose}
+          handleSubmit={handleEdit}
+          handleDelete={handleDelete}
+          formData={formData}
+          setFormData={setFormData}
+          isEditing={true}
         />
       </Page.Content>
     </Page>

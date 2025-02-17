@@ -63,3 +63,26 @@ export const EMPTY_VULNERABILITY = {
   cwe: "",
   status: "Reported",
 } as Vulnerability;
+
+export const USERS = [
+  {
+    id: 1,
+    name: "John Doe",
+    src: "https://i.pravatar.cc/64?img=68",
+  },
+  {
+    id: 2,
+    name: "Jane Doe",
+    src: "https://i.pravatar.cc/64?img=32",
+  },
+  {
+    id: 3,
+    name: "John Smith",
+    src: "https://i.pravatar.cc/64?img=59",
+  },
+  {
+    id: 4,
+    name: "Jane Smith",
+    src: "https://i.pravatar.cc/64?img=25",
+  },
+];

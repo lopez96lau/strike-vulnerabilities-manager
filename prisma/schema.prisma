@@ -11,10 +11,11 @@ model Vulnerability {
   id          Int   @id @default(autoincrement())
   title       String
   description String
-  severity    String   // Baja, Media, Alta, Crítica
-  cwe         String?
-  status      String   // Pending Fix, In Progress, Solved, False Positive
+  severity    String
+  cwe         String
+  status      String
   assignedTo  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  evidence    String?
 }
