@@ -11,6 +11,7 @@
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
   },
+  "build": "npx prisma db push && npx prisma generate && next build",
   "dependencies": {
     "@geist-ui/core": "^2.3.8",
     "@geist-ui/icons": "^1.0.2",
