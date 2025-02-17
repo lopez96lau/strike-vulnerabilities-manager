@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   const { id, title, description, severity, status, evidence, assignedTo } =
     await req.json();
   const updatedVulnerability = await prisma.vulnerability.update({
@@ -21,11 +21,14 @@ export async function PUT(req: Request) {
   return NextResponse.json(updatedVulnerability);
 }
 
-export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function DELETE(request: NextRequest) {
+  const id = request.nextUrl.pathname.split("/").pop();
+  if (!id) {
+    return NextResponse.json(
+      { error: "Missing Vulnerability ID" },
+      { status: 400 }
+    );
+  }
   await prisma.vulnerability.delete({
     where: { id: parseInt(id) },
   });
