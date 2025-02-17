@@ -32,10 +32,9 @@ export const DroppableStatusColumn = ({
       ref={setNodeRef}
       className={`${className} ${
         isOver ? dndColorVariants[color as keyof typeof dndColorVariants] : ""
-      }`}
-      style={{ pointerEvents: "none" }}
+      } pointer-events-none`}
     >
-      <div style={{ pointerEvents: "auto" }}>{children}</div>
+      <div className="pointer-events-auto">{children}</div>
     </div>
   );
 };

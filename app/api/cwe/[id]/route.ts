@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "edge";
 export const revalidate = 3600;
 
+// Get a specific CWE info by ID
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.pathname.split("/").pop();
 

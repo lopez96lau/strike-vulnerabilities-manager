@@ -7,6 +7,7 @@ import AddVulnerabilityModal from "@/components/AddVulnerabilityModal";
 import { Vulnerability } from "./vulnerabilities/types";
 import {
   EMPTY_VULNERABILITY,
+  VULNERABILITY_SEVERITIES,
   VULNERABILITY_STATUSES,
 } from "./vulnerabilities/constants";
 import logo from "@/public/assets/icons/logo.svg";
@@ -23,7 +24,11 @@ import {
   useSensors,
   PointerSensor,
 } from "@dnd-kit/core";
-import { getStatusColor } from "@/utils/assets";
+import {
+  getSeverityIcon,
+  getSeverityValue,
+  getStatusColor,
+} from "@/utils/assets";
 import DraggableVulnerabilityCard from "@/components/DraggableVulnerabilityCard";
 import DroppableStatusColumn from "@/components/DroppableStatusColumn";
 
@@ -386,12 +391,19 @@ export default function Vulnerabilities() {
                           onPointerEnterCapture={undefined}
                           onPointerLeaveCapture={undefined}
                         >
-                          <Select.Option value="High">High</Select.Option>
-                          <Select.Option value="Medium">Medium</Select.Option>
-                          <Select.Option value="Low">Low</Select.Option>
-                          <Select.Option value="Critical">
-                            Critical
-                          </Select.Option>
+                          {VULNERABILITY_SEVERITIES.map((severity) => (
+                            <Select.Option
+                              value={severity.name}
+                              key={severity.id}
+                            >
+                              <div className="flex gap-2 items-center">
+                                {getSeverityIcon(
+                                  getSeverityValue(severity.name)
+                                )}
+                                {severity.name}
+                              </div>
+                            </Select.Option>
+                          ))}
                         </Select>
                         <Select
                           scale={2 / 3}
@@ -442,14 +454,7 @@ export default function Vulnerabilities() {
                       )}
                     </div>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      minHeight: "200px",
-                    }}
-                  >
+                  <div className="flex flex-col gap-4">
                     {!loading
                       ? filterAndSortVulnerabilities(
                           data.filter(

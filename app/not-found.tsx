@@ -9,7 +9,7 @@ import empty from "@/public/assets/images/emptyState.svg";
 export default function Vulnerabilities() {
   return (
     <Page className="!m-0 !p-0 !w-full">
-      <Page.Header className="!sticky">
+      <Page.Header>
         <div className="flex justify-between items-center p-4 border border-b-gray-400">
           <div className="flex gap-2 items-center">
             <Image src={logo} alt="logo" height={16} />

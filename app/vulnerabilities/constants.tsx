@@ -67,22 +67,32 @@ export const EMPTY_VULNERABILITY = {
 export const USERS = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Jerry Dover",
     src: "https://i.pravatar.cc/64?img=68",
   },
   {
     id: 2,
-    name: "Jane Doe",
+    name: "Jane Lynch",
     src: "https://i.pravatar.cc/64?img=32",
   },
   {
     id: 3,
-    name: "John Smith",
+    name: "Carl Smithers",
     src: "https://i.pravatar.cc/64?img=59",
   },
   {
     id: 4,
-    name: "Jane Smith",
+    name: "Vera Huang",
     src: "https://i.pravatar.cc/64?img=25",
+  },
+  {
+    id: 5,
+    name: "James Santos",
+    src: "https://i.pravatar.cc/64?img=14",
+  },
+  {
+    id: 6,
+    name: "Timotheé Lacroix",
+    src: "https://i.pravatar.cc/64?img=12",
   },
 ];

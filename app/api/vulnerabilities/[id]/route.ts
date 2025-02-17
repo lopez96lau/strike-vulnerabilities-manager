@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// Update a vulnerability
 export async function PUT(request: NextRequest) {
   const id = request.nextUrl.pathname.split("/").pop();
   if (!id) {
@@ -14,7 +15,14 @@ export async function PUT(request: NextRequest) {
   const { title, description, severity, status, evidence, assignedTo } =
     await request.json();
 
-  // Validate status transitions
+  // Status transitions:
+  // =================================================================================
+  // Reported -> Pending Fix -> In Progress -> Validation -> False Positive -> Solved
+  // =================================================================================
+  // - Initial status (REPORTED and PENDING FIX) requires vulnerability's basic information only.
+  // - Intermediate status (IN PROGRESS) requires an assigned user in addition to the basic information.
+  // - Final status (VALIDATION, FALSE POSITIVE and SOLVED) requires both evidence and an assigned user.
+
   if (status === "In Progress" && !assignedTo) {
     return NextResponse.json(
       { error: "Cannot move to In Progress without an assigned user" },
@@ -56,6 +64,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
+// Delete a vulnerability
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.pathname.split("/").pop();
   if (!id) {

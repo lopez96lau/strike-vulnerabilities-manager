@@ -76,3 +76,12 @@ export const getStatusColor = (status: string) => {
       return "gray";
   }
 };
+
+export const statusColorVariants = {
+  gray: "bg-gray-900",
+  pink: "bg-pink-900",
+  amber: "bg-amber-900",
+  blue: "bg-blue-900",
+  red: "bg-red-900",
+  green: "bg-green-900",
+};
