@@ -1,12 +1,19 @@
 import React, { ReactNode } from "react";
-import { badgeColorVariants } from "@/utils/assets";
-
 interface BadgeProps {
   color: string;
   children: ReactNode;
   label?: string;
   title?: string;
 }
+
+const badgeColorVariants = {
+  gray: "bg-gray-200 text-gray-900",
+  pink: "bg-pink-200 text-pink-900",
+  amber: "bg-amber-200 text-amber-900",
+  blue: "bg-blue-200 text-blue-900",
+  red: "bg-red-200 text-red-900",
+  green: "bg-green-200 text-green-900",
+};
 
 export const Badge = (badge: BadgeProps) => {
   return (

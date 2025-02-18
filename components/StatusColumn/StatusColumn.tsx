@@ -3,13 +3,7 @@ import { Text, Select, Button } from "@geist-ui/core";
 import DraggableVulnerabilityCard from "../DraggableVulnerabilityCard";
 import VulnerabilityCardSkeleton from "../VulnerabilityCardSkeleton";
 import { VULNERABILITY_SEVERITIES } from "@/app/vulnerabilities/constants";
-import {
-  borderColorVariants,
-  badgeColorVariants,
-  colorVariants,
-  getSeverityIcon,
-  getSeverityValue,
-} from "@/utils/assets";
+import { getSeverityIcon, getSeverityValue } from "@/utils/assets";
 import { Vulnerability } from "@/app/vulnerabilities/types";
 
 interface StatusColumnProps {
@@ -29,6 +23,33 @@ interface StatusColumnProps {
   onClearFilters: (statusName: string) => void;
   onVulnerabilityClick: (vulnerability: Vulnerability) => void;
 }
+
+const colorVariants = {
+  gray: "bg-gray-50",
+  pink: "bg-pink-50",
+  amber: "bg-amber-50",
+  blue: "bg-blue-50",
+  red: "bg-red-50",
+  green: "bg-green-50",
+};
+
+const badgeColorVariants = {
+  gray: "bg-gray-200 text-gray-900",
+  pink: "bg-pink-200 text-pink-900",
+  amber: "bg-amber-200 text-amber-900",
+  blue: "bg-blue-200 text-blue-900",
+  red: "bg-red-200 text-red-900",
+  green: "bg-green-200 text-green-900",
+};
+
+const borderColorVariants = {
+  gray: "border-gray-900",
+  pink: "border-pink-900",
+  amber: "border-amber-900",
+  blue: "border-blue-900",
+  red: "border-red-900",
+  green: "border-green-900",
+};
 
 export function StatusColumn({
   status,
