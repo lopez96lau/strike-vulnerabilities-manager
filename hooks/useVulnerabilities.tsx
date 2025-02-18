@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Vulnerability } from "@/app/vulnerabilities/types";
+import { Vulnerability } from "@/types";
 import { useToasts } from "@geist-ui/core";
 
 export function useVulnerabilities() {

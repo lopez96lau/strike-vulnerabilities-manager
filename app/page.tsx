@@ -15,16 +15,13 @@ import StatusColumn from "@/components/StatusColumn";
 import VulnerabilityCard from "@/components/VulnerabilityCard";
 import AddVulnerabilityModal from "@/components/AddVulnerabilityModal";
 import VulnerabilityDetailsModal from "@/components/VulnerabilityDetailsModal";
-import { Vulnerability } from "./vulnerabilities/types";
+import { Vulnerability } from "../types";
 import { getStatusColor } from "@/utils/assets";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useVulnerabilities } from "@/hooks/useVulnerabilities";
 import { useVulnerabilityFilters } from "@/hooks/useVulnerabilityFilters";
 import logo from "@/public/assets/icons/logo.svg";
-import {
-  EMPTY_VULNERABILITY,
-  VULNERABILITY_STATUSES,
-} from "./vulnerabilities/constants";
+import { EMPTY_VULNERABILITY, VULNERABILITY_STATUSES } from "../constants";
 
 export default function Vulnerabilities() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -73,14 +70,14 @@ export default function Vulnerabilities() {
     >
       <Page className="!m-0 !p-0 !w-full">
         <Page.Header className="!sticky">
-          <div className="flex justify-between items-center p-4 border border-b-gray-400">
+          <div className="flex justify-center sm:justify-between items-center p-4 border border-b-gray-400">
             <div className="flex gap-2 items-center">
               <Image src={logo} alt="logo" height={16} />
               <Text h3 className="!m-0">
                 Strike Vulnerabilities Manager
               </Text>
             </div>
-            <div className="flex gap-4 items-center">
+            <div className="hidden sm:flex gap-4 items-center">
               <Link
                 href="https://github.com/lopez96lau/strike-vulnerabilities-manager"
                 target="_blank"
@@ -194,6 +191,23 @@ export default function Vulnerabilities() {
           setFormData={setFormData}
           isEditing={true}
         />
+
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-gray-200 shadow-lg">
+          <div className="flex justify-center py-4">
+            <Button
+              auto
+              type="secondary"
+              onClick={() => setIsAddModalOpen(true)}
+              iconRight={<Plus />}
+              className="w-[90%]"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Add Vulnerability
+            </Button>
+          </div>
+        </div>
       </Page>
     </DndContext>
   );

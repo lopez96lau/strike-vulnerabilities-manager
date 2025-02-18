@@ -10,14 +10,14 @@ export default function Vulnerabilities() {
   return (
     <Page className="!m-0 !p-0 !w-full">
       <Page.Header>
-        <div className="flex justify-between items-center p-4 border border-b-gray-400">
+        <div className="flex justify-center sm:justify-between items-center p-4 border border-b-gray-400">
           <div className="flex gap-2 items-center">
             <Image src={logo} alt="logo" height={16} />
             <Text h3 className="!m-0">
               Strike Vulnerabilities Manager
             </Text>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="hidden sm:flex gap-4 items-center">
             <Link
               href="https://github.com/lopez96lau/strike-vulnerabilities-manager"
               target="_blank"

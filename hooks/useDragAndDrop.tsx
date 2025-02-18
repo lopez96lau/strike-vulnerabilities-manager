@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
-import { Vulnerability } from "@/app/vulnerabilities/types";
+import { Vulnerability } from "@/types";
 import { useToasts } from "@geist-ui/core";
 
 export function useDragAndDrop(

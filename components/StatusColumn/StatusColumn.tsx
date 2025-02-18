@@ -2,9 +2,9 @@ import { useDroppable } from "@dnd-kit/core";
 import { Text, Select, Button } from "@geist-ui/core";
 import DraggableVulnerabilityCard from "../DraggableVulnerabilityCard";
 import VulnerabilityCardSkeleton from "../VulnerabilityCardSkeleton";
-import { VULNERABILITY_SEVERITIES } from "@/app/vulnerabilities/constants";
+import { VULNERABILITY_SEVERITIES } from "@/constants";
 import { getSeverityIcon, getSeverityValue } from "@/utils/assets";
-import { Vulnerability } from "@/app/vulnerabilities/types";
+import { Vulnerability } from "@/types";
 
 interface StatusColumnProps {
   status: {
@@ -67,7 +67,7 @@ export function StatusColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex-shrink-0 shadow w-[440px] rounded-[10px] p-4 border ${
+      className={`flex-shrink-0 shadow w-[-webkit-fill-available] sm:w-[440px] rounded-[10px] p-4 border ${
         isOver
           ? `${
               borderColorVariants[
@@ -95,7 +95,7 @@ export function StatusColumn({
               </Text>
             </div>
           </div>
-          <div className="flex w-full gap-3">
+          <div className="flex w-full gap-3 flex-wrap sm:flex-nowrap">
             <Select
               scale={2 / 3}
               placeholder="Filter"
