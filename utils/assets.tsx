@@ -77,6 +77,15 @@ export const getStatusColor = (status: string) => {
   }
 };
 
+export const colorVariants = {
+  gray: "bg-gray-50",
+  pink: "bg-pink-50",
+  amber: "bg-amber-50",
+  blue: "bg-blue-50",
+  red: "bg-red-50",
+  green: "bg-green-50",
+};
+
 export const statusColorVariants = {
   gray: "bg-gray-900",
   pink: "bg-pink-900",
@@ -84,4 +93,40 @@ export const statusColorVariants = {
   blue: "bg-blue-900",
   red: "bg-red-900",
   green: "bg-green-900",
+};
+
+export const badgeColorVariants = {
+  gray: "bg-gray-200 text-gray-900",
+  pink: "bg-pink-200 text-pink-900",
+  amber: "bg-amber-200 text-amber-900",
+  blue: "bg-blue-200 text-blue-900",
+  red: "bg-red-200 text-red-900",
+  green: "bg-green-200 text-green-900",
+};
+
+export const borderColorVariants = {
+  gray: "border-gray-900",
+  pink: "border-pink-900",
+  amber: "border-amber-900",
+  blue: "border-blue-900",
+  red: "border-red-900",
+  green: "border-green-900",
+};
+
+export const hoverColorVariants = {
+  gray: "hover:!border-gray-700",
+  pink: "hover:!border-pink-700",
+  amber: "hover:!border-amber-700",
+  blue: "hover:!border-blue-700",
+  red: "hover:!border-red-700",
+  green: "hover:!border-green-700",
+};
+
+export const dndColorVariants = {
+  gray: "!border-gray-900 border-2 bg-gray-200",
+  pink: "!border-pink-900 border-2 bg-pink-200",
+  amber: "!border-amber-900 border-2 bg-amber-200",
+  blue: "!border-blue-900 border-2 bg-blue-200",
+  red: "!border-red-900 border-2 bg-red-200",
+  green: "!border-green-900 border-2 bg-green-200",
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
+import { dndColorVariants } from "@/utils/assets";
 
 interface Props {
   id: string;
@@ -7,15 +8,6 @@ interface Props {
   color: string;
   className: string;
 }
-
-const dndColorVariants = {
-  gray: "!border-gray-900 border-2 bg-gray-200",
-  pink: "!border-pink-900 border-2 bg-pink-200",
-  amber: "!border-amber-900 border-2 bg-amber-200",
-  blue: "!border-blue-900 border-2 bg-blue-200",
-  red: "!border-red-900 border-2 bg-red-200",
-  green: "!border-green-900 border-2 bg-green-200",
-};
 
 export const DroppableStatusColumn = ({
   id,
